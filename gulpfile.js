@@ -25,6 +25,10 @@ const path = {
   js: {
     src: './source/js/**/*.js',
     des: './public/js'
+  },
+  image: {
+    src: './source/images/**/*',
+    des: './public/images'
   }
 }
 
@@ -58,6 +62,11 @@ function babel(){
     .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest(path.js.des))
     .pipe(browserSync.stream())
+}
+
+function image(){
+  return gulp.src(path.image.src)
+    .pipe(gulp.dest(path.image.des))
 }
 
 function vendorsJs(){
@@ -107,6 +116,6 @@ function deploy(){
 
 exports.deploy = deploy
 
-exports.build = gulp.series(clean, ejs, sassTask, babel, vendorsJs)
+exports.build = gulp.series(clean, ejs, sassTask, babel, vendorsJs, image)
 
-exports.default = gulp.series(clean, ejs, sassTask, babel, vendorsJs, gulp.parallel(watch, browser))
+exports.default = gulp.series(clean, ejs, sassTask, babel, vendorsJs, image, gulp.parallel(watch, browser))
